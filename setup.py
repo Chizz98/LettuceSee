@@ -14,7 +14,7 @@ setup(
     description="A package of image analysis algorithms suited for plants",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    version="0.0.9",
+    version="0.0.11",
     install_requires=[
         "scikit-image",
         "scipy",
