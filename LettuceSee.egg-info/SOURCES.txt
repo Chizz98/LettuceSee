@@ -1,0 +1,9 @@
+README.md
+setup.py
+LettuceSee/__init__.py
+LettuceSee/segment.py
+LettuceSee/util.py
+LettuceSee.egg-info/PKG-INFO
+LettuceSee.egg-info/SOURCES.txt
+LettuceSee.egg-info/dependency_links.txt
+LettuceSee.egg-info/top_level.txt
