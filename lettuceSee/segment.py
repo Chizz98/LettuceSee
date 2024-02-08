@@ -8,7 +8,7 @@ Contains functions for segmenting image arrays.
 import skimage as sk
 import numpy as np
 from scipy import signal
-import util
+from . import util
 
 
 def elevation_map(rgb_im):
