@@ -1,14 +1,12 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
+from lettuceSee import __version__
 
 setup(
-    name='lettuceSee',
-    packages=['lettuceSee'],
-    version='0.0.1a0',
-    description='Test build',
-    author='',
-    author_email='',
-    url='https://github.com/Chizz98/LettuceSee',
-    download_url='https://github.com/Chizz98/LettuceSee/archive/refs/tags/v0.0.1-alpha.tar.gz',
-    keywords=['tag1', 'tag2'],
-    classifiers=["test"],
+    name="lettuceSee",
+    url="https://github.com/Chizz98/LettuceSee",
+    packages=find_packages(),
+    version=__version__,
+    install_requires=[
+        "scikit-image>=0.10.0"
+    ]
 )
