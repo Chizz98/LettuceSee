@@ -1,5 +1,9 @@
 from setuptools import setup, find_packages
-from lettuceSee import __version__
+
+# read the contents of README file
+from pathlib import Path
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="lettuceSee",
@@ -7,10 +11,18 @@ setup(
     packages=find_packages(),
     author="Chris Dijkstra",
     author_email="chris_dijkstra98@hotmail.com",
-    version=__version__,
+    description="A package of image analysis algorithms suited for plants",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    version="0.0.9",
     install_requires=[
         "scikit-image",
         "scipy",
         "numpy"
+    ],
+    classifiers=[
+        "Development Status :: 2 - Pre-Alpha",
+        "Topic :: Scientific/Engineering :: Image Processing",
+        "Intended Audience :: Science/Research"
     ]
 )
