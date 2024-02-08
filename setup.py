@@ -9,6 +9,8 @@ setup(
     author_email="chris_dijkstra98@hotmail.com",
     version=__version__,
     install_requires=[
-        "scikit-image>=0.10.0"
+        "scikit-image",
+        "scipy",
+        "numpy"
     ]
 )
