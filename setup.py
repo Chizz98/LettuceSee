@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='lettuceSee',
     packages=['lettuceSee'],
-    version='v0.0.1-alpha',  # Ideally should be same as your GitHub release tag varsion
+    version='v0.0.1a0',
     description='Test build',
     author='',
     author_email='',
