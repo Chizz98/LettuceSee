@@ -5,7 +5,7 @@ A package with high level functions for analyzing images of plants.
 The following example showcases a miniature pipeline using lettuceSee and 
 scikit-image functions. 
 
-![Alt text](https://github.com/Chizz98/LettuceSee/blob/main/readme_images/original_image.png "Input image")
+![](https://github.com/Chizz98/LettuceSee/raw/main/readme_images/original_image.png "Input image")
 
 An image of lettuce affected with necrosis is loaded in as a numpy array. 
 After removing the alpha layer, applying the shw_segmentation function from the
