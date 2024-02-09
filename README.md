@@ -23,7 +23,7 @@ image = skimage.util.img_as_ubyte(skimage.color.rgba2rgb(image))
 bg_mask = segment.shw_segmentation(image)
 ```
 
-![Alt text](/readme_images/bg_mask1.png "Background mask")
+![Alt text](https://github.com/Chizz98/LettuceSee/blob/main/readme_images/bg_mask1.png "Background mask")
 
 The initial segmentation looks decent, however there is still some background 
 noise, as well as other plants intruding from the side. The function 
@@ -33,7 +33,7 @@ as well as connected objects with very different coloration.
 bg_mask = segment.canny_central_ob(image=image, mask=bg_mask, sigma=2.5)
 ```
 
-![Alt text](/readme_images/bg_mask2.png "Cleaned background mask")
+![Alt text](https://github.com/Chizz98/LettuceSee/blob/main/readme_images/bg_mask2.png "Cleaned background mask")
 
 After finishing the background segmentation, the function barb_hue is used to 
 segment green from brown tissue through the method described in 
@@ -42,7 +42,7 @@ segment green from brown tissue through the method described in
 ```python
 necrosis_mask = segment.barb_hue(image=image, bg_mask=bg_mask, div=3)
 ```
-![Alt text](/readme_images/necrosis_mask.png "Background + necrosis mask")
+![Alt text](https://github.com/Chizz98/LettuceSee/blob/main/readme_images/necrosis_mask.png "Background + necrosis mask")
 
 ## Installation
 The package can be installed from the pypi test distribution trough:
