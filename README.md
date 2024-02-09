@@ -22,8 +22,10 @@ bg_mask = segment.shw_segmentation(image)
 
 ![Alt text](/readme_images/bg_mask1.png "Background mask")
 
-Following this, the function canny_central_ob is used to remove non_plant 
-objects from the mask.
+The initial segmentation looks decent, however there is still some background 
+noise, as well as other plants intruding from the side. The function 
+canny_central_ob is used to remove objects not attached to the central object, 
+as well as connected objects with very different coloration.
 ```python
 bg_mask = segment.canny_central_ob(image=image, mask=bg_mask, sigma=2.5)
 ```
@@ -46,7 +48,7 @@ python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-ur
 ```
 
 ### Anaconda
-There is no dedicated lettucesee installation for anaconda, if you do want to 
+There is no dedicated lettuceSee installation for anaconda, if you do want to 
 install the package within anaconda the following method is recommended:
 First create a new environment following the [anaconda documentation](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands). 
 Activate your fresh environment and install pip:
