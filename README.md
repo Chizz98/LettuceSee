@@ -2,6 +2,9 @@
 A package with high level functions for analyzing images of plants.
 
 ## Example case
+The following example showcases a miniature pipeline using lettuceSee and 
+scikit-image functions. 
+
 ![Alt text](/readme_images/original_image.png "Input image")
 
 An image of lettuce affected with necrosis is loaded in as a numpy array. 
