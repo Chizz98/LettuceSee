@@ -25,7 +25,7 @@ bg_mask = segment.shw_segmentation(image)
 
 ![](https://github.com/Chizz98/LettuceSee/raw/main/readme_images/bg_mask1.png "Background mask")
 
-The initial segmentation looks decent, however there is still some background 
+The initial segmentation looks decent, however, there is still some background 
 noise, as well as other plants intruding from the side. The function 
 canny_central_ob is used to remove objects not attached to the central object, 
 as well as connected objects with very different coloration.
@@ -45,7 +45,7 @@ necrosis_mask = segment.barb_hue(image=image, bg_mask=bg_mask, div=3)
 ![](https://github.com/Chizz98/LettuceSee/raw/main/readme_images/necrosis_mask.png "Background + necrosis mask")
 
 ## Installation
-The package can be installed from the pypi test distribution trough:
+The package can be installed from the pypi test distribution through:
 ```shell
 pip install lettuceSee
 ```
