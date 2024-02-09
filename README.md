@@ -47,7 +47,7 @@ necrosis_mask = segment.barb_hue(image=image, bg_mask=bg_mask, div=3)
 ## Installation
 The package can be installed from the pypi test distribution trough:
 ```shell
-python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ lettuceSee=0.0.12
+pip install lettuceSee
 ```
 
 ### Anaconda
