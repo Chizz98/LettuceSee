@@ -4,7 +4,7 @@ A package developed for the analysis of plant images.
 ## Installation
 The package can be installed from the pypi test distribution trough:
 ```shell
-pip py -m pip install --index-url https://test.pypi.org/simple/ lettuceSee
+python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ lettuceSee=0.0.11
 ```
 
 ### Anaconda
