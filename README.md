@@ -17,8 +17,8 @@ import skimage
 import matplotlib.pyplot as plt
 
 image = skimage.io.imread(
-    r"C:\Users\chris\Documents\GitHub\tipburn_quantification\test_images"
-    r"\rgb\51-78-Lettuce_Correct_Tray_074-RGB-Original_pos2_LK120.png")
+    "Image/path/here.png"
+)
 image = skimage.util.img_as_ubyte(skimage.color.rgba2rgb(image))
 bg_mask = segment.shw_segmentation(image)
 ```
