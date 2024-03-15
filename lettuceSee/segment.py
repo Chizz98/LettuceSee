@@ -48,6 +48,34 @@ def multichannel_threshold(multi_ch_im, x_th=0.0, y_th=0.0, z_th=0.0,
     return mask
 
 
+def sh_markers(image, distance, bg_mod, fg_mod):
+    """ Creates marker image based on sobel histogram
+
+    :param image: np.ndarray representing a 3d image
+    :param distance: int, minimal distance between local maxima and minima
+    :param bg_mod: float, modifier for histogram segmentation
+    :param fg_mod: float, modifier for histogram segmentation
+    :return np.ndarray, 2D marker image
+    """
+    if image.shape[2] == 4:
+        image = sk.util.img_as_ubyte(sk.color.rgba2rgb(image))
+    comp_sob = sk.filters.sobel(image)
+    comp_sob = comp_sob[:, :, 0] + comp_sob[:, :, 1] + comp_sob[:, :, 2]
+    values, bins = np.histogram(comp_sob, bins=100)
+    max_i, _ = signal.find_peaks(values, distance=distance)
+    max_bins = bins[max_i]
+    min_i, _ = signal.find_peaks(-values, distance=distance)
+    min_bins = bins[min_i]
+    min_bins = min_bins[min_bins > max_bins[0]]
+    markers = np.zeros_like(comp_sob)
+    markers[
+        comp_sob <= max_bins[0] + (bg_mod * (min_bins[0] - max_bins[0]))] = 1
+    markers[
+        comp_sob >= min_bins[0] + (fg_mod * (max_bins[1] - min_bins[0]))] = 2
+    markers = markers.astype(int)
+    return markers
+
+
 def shw_segmentation(image, distance=10, bg_mod=0.15, fg_mod=0.2):
     """ Creates binary image through sobel + histogram thresholds + watershed
 
