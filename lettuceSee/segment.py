@@ -48,7 +48,7 @@ def multichannel_threshold(multi_ch_im, x_th=0.0, y_th=0.0, z_th=0.0,
     return mask
 
 
-def sh_markers(image, distance, bg_mod, fg_mod):
+def sh_markers(image, distance=10, bg_mod=0.15, fg_mod=0.2):
     """ Creates marker image based on sobel histogram
 
     :param image: np.ndarray representing a 3d image
