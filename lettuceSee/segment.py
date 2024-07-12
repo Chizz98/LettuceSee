@@ -183,17 +183,17 @@ def canny_labs(image, mask, sigma):
     return sk.morphology.dilation(labels)
 
 
-def centre_primary_label(lab_im, radius=200, bg_label=0):
+def centre_primary_label(lab_im, edge_length=200, bg_label=0):
     """ Takes labelled image and returns the label of the central object
 
     :param lab_im: np.ndarray, labelled image with only positive values and 0
-    :param radius: int, height and width of the square used on the centre
+    :param edge_length: int, height and width of the square used on the centre
     :param bg_label: int, the label number that will be considered background.
         This can not be chosen as the primary label.
     :return: int, primary label
     """
     centre = (lab_im.shape[0] // 2, lab_im.shape[1] // 2)
-    crop = util.crop_region(lab_im, centre, (radius, radius))
+    crop = util.crop_region(lab_im, centre, (edge_length, edge_length))
     return np.argmax(np.bincount(crop[crop != bg_label].ravel()))
 
 
