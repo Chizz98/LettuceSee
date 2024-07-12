@@ -197,6 +197,21 @@ def centre_primary_label(lab_im, edge_length=200, bg_label=0):
     return np.argmax(np.bincount(crop[crop != bg_label].ravel()))
 
 
+def central_ob(mask, edge_length=200):
+    """ Selects the largest object in the centre of the image
+
+    :param mask: np.ndarray, 2d array representing a background mask
+    :param edge_length: int, height and width of the square considered the
+        centre
+    :return: np.ndarray, 2d array representing the input mask with only the
+        largest central object
+    """
+    label_image = sk.measure.label(mask)
+    central_lab = centre_primary_label(label_image, edge_length)
+    centre_mask = (label_image == central_lab).astype(int)
+    return centre_mask
+
+
 def canny_central_ob(image, mask, sigma, central_area=200):
     """ Uses canny filter and color channel thresholding to take central object
 
