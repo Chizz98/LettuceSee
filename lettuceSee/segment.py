@@ -11,7 +11,7 @@ from scipy import signal
 from . import util
 
 
-def elevation_map(rgb_im):
+def elevation_map(rgb_im: np.ndarray):
     """ Creates an elevation map of an RGB image based on sobel filtering
 
     :param rgb_im: numpy.ndarray, 3 dimensional array representing an RGB image
@@ -24,8 +24,8 @@ def elevation_map(rgb_im):
     return elevation
 
 
-def multichannel_threshold(multi_ch_im, x_th=0.0, y_th=0.0, z_th=0.0,
-                           inverse=False):
+def multichannel_threshold(multi_ch_im, x_th: float = 0.0, y_th: float = 0.0,
+                           z_th: float = 0.0, inverse: bool = False):
     """ Takes a three-channel image and returns a mask based on thresholds
 
     :param multi_ch_im: np.nd_array a numpy array representing an image with
@@ -132,7 +132,7 @@ def barb_thresh(im_channel, div=3):
     return thresh
 
 
-def barb_hue(image, bg_mask=None, div=3):
+def barb_hue(image, bg_mask: np.ndarray = None, div: int = 3):
     """ Takes an image of plant tissue and segments into healthy and brown
 
     :param image: np.ndarray, 3d array representing an rgb image
