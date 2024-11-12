@@ -11,11 +11,11 @@ from scipy import signal
 from . import util
 
 
-def elevation_map(rgb_im: np.ndarray):
+def elevation_map(rgb_im: np.ndarray) -> np.ndarray:
     """ Creates an elevation map of an RGB image based on sobel filtering
 
-    :param rgb_im: numpy.ndarray, 3 dimensional array representing an RGB image
-    :return: numpy.ndarray, 2 dimensional array representing an edge map
+    :param rgb_im: 3 dimensional array representing an RGB image
+    :return: 2 dimensional array representing an edge map
     """
     compound_sobel = sk.filters.sobel(rgb_im)
     compound_sobel = compound_sobel[:, :, 0] + compound_sobel[:, :, 1] + \
@@ -24,18 +24,20 @@ def elevation_map(rgb_im: np.ndarray):
     return elevation
 
 
-def multichannel_threshold(multi_ch_im, x_th: float = 0.0, y_th: float = 0.0,
-                           z_th: float = 0.0, inverse: bool = False):
+def multichannel_threshold(
+        multi_ch_im, x_th: float = 0.0, y_th: float = 0.0, z_th: float = 0.0,
+        inverse: bool = False
+) -> np.ndarray:
     """ Takes a three-channel image and returns a mask based on thresholds
 
-    :param multi_ch_im: np.nd_array a numpy array representing an image with
+    :param multi_ch_im: a numpy array representing an image with
         three color channels
-    :param x_th: float, the threshold for the first channel, 0.0 by default
-    :param y_th: float, the threshold for the second channel, 0.0 by default
-    :param z_th: float, the threshold for the third channel, 0.0 by default
-    :param inverse: bool, if False pixels below the threshold are marked as 0,
+    :param x_th: the threshold for the first channel, 0.0 by default
+    :param y_th: the threshold for the second channel, 0.0 by default
+    :param z_th: the threshold for the third channel, 0.0 by default
+    :param inverse: if False pixels below the threshold are marked as 0,
         if True, pixels above the threshold are marked as 0.
-    :return: np.nd_array, the mask created based on the thresholds, 2D array
+    :return: the mask created based on the thresholds, 2D array
         same width and height as the input
     """
     mask = np.ones(multi_ch_im.shape[0:2])
@@ -48,14 +50,15 @@ def multichannel_threshold(multi_ch_im, x_th: float = 0.0, y_th: float = 0.0,
     return mask
 
 
-def sh_markers(image, distance=10, bg_mod=0.15, fg_mod=0.2):
+def sh_markers(image: np.ndarray, distance: int = 10, bg_mod: float = 0.15,
+               fg_mod: float = 0.2) -> np.ndarray:
     """ Creates marker image based on sobel histogram
 
-    :param image: np.ndarray representing a 3d image
-    :param distance: int, minimal distance between local maxima and minima
-    :param bg_mod: float, modifier for histogram segmentation
-    :param fg_mod: float, modifier for histogram segmentation
-    :return np.ndarray, 2D marker image
+    :param image: 3d array representing a 3 channel image
+    :param distance: minimal distance between local maxima and minima
+    :param bg_mod: modifier for histogram segmentation
+    :param fg_mod: modifier for histogram segmentation
+    :return: 2D marker image
     """
     if image.shape[2] == 4:
         image = sk.util.img_as_ubyte(sk.color.rgba2rgb(image))
@@ -76,14 +79,17 @@ def sh_markers(image, distance=10, bg_mod=0.15, fg_mod=0.2):
     return markers
 
 
-def shw_segmentation(image, distance=10, bg_mod=0.15, fg_mod=0.2):
+def shw_segmentation(
+        image: np.ndarray, distance: int = 10, bg_mod: float = 0.15,
+        fg_mod: float = 0.2
+) -> np.ndarray:
     """ Creates binary image through sobel + histogram thresholds + watershed
 
-    :param image: np.ndarray representing a 3d image
-    :param distance: int, minimal distance between local maxima and minima
-    :param bg_mod: float, modifier for histogram segmentation
-    :param fg_mod: float, modifier for histogram segmentation
-    :return np.ndarray, 2D mask for the image
+    :param image: array representing a 3d image
+    :param distance: minimal distance between local maxima and minima
+    :param bg_mod: modifier for histogram segmentation
+    :param fg_mod: modifier for histogram segmentation
+    :return: 2D mask for the image
     """
     if image.shape[2] == 4:
         image = sk.util.img_as_ubyte(sk.color.rgba2rgb(image))
@@ -107,14 +113,14 @@ def shw_segmentation(image, distance=10, bg_mod=0.15, fg_mod=0.2):
     return mask - 1
 
 
-def barb_thresh(im_channel, div=3):
+def barb_thresh(im_channel: np.ndarray, div: int = 3) -> float:
     """ Defines the threshold of an image channel based on its histogram
 
-    :param im_channel: np.ndarray, 2d array, meant to be hue channel of hsv or
+    :param im_channel: 2d array, meant to be hue channel of hsv or
         a channel of lab
-    :param div: int, the divisor used at the end of the algorithm. A higher
+    :param div: the divisor used at the end of the algorithm. A higher
         divisor will lead to a lower threshold
-    :return float, the threshold of the image channel that separates it into
+    :return: the threshold of the image channel that separates it into
         healthy and unhealthy tissue
     """
     values, bins = np.histogram(im_channel, bins=100)
@@ -132,14 +138,16 @@ def barb_thresh(im_channel, div=3):
     return thresh
 
 
-def barb_hue(image, bg_mask: np.ndarray = None, div: int = 3):
+def barb_hue(
+        image: np.ndarray, bg_mask: np.ndarray = None, div: int = 3
+) -> np.ndarray:
     """ Takes an image of plant tissue and segments into healthy and brown
 
-    :param image: np.ndarray, 3d array representing an rgb image
-    :param bg_mask: np.ndarray, 2d array to mask the background
-    :param div: int, the divisor used at the end of the algorithm. A higher
+    :param image: 3d array representing an rgb image
+    :param bg_mask: 2d array to mask the background
+    :param div: the divisor used at the end of the algorithm. A higher
         divisor will lead to a lower threshold
-    :return np.ndarray, mask with background as 0, healthy tissue as 1 and
+    :return: mask with background as 0, healthy tissue as 1 and
         brown tissue as 2
     """
     if bg_mask is not None:
@@ -163,14 +171,14 @@ def barb_hue(image, bg_mask: np.ndarray = None, div: int = 3):
     return comp_mask
 
 
-def canny_labs(image, mask, sigma):
+def canny_labs(image: np.ndarray, mask: np.ndarray, sigma: float) -> np.ndarray:
     """ Separates objects trough canny lines and then labels the output
 
-    :param image: np.dnarray, 2d array representing an image
-    :param mask: np.ndarray, 2d binary mask
-    :param sigma: float, the sigma used for the gaussian blur component of canny
+    :param image: 2d array representing an image
+    :param mask: 2d binary mask
+    :param sigma: the sigma used for the gaussian blur component of canny
         segmentation
-    :return np.ndarray, labelled image
+    :return: labelled image
     """
     canny_f = sk.feature.canny(image, sigma=sigma)
     canny_f = sk.morphology.closing(
@@ -183,27 +191,29 @@ def canny_labs(image, mask, sigma):
     return sk.morphology.dilation(labels)
 
 
-def centre_primary_label(lab_im, edge_length=200, bg_label=0):
+def centre_primary_label(
+        lab_im: np.ndarray, edge_length: int = 200, bg_label: int = 0
+) -> np.ndarray:
     """ Takes labelled image and returns the label of the central object
 
-    :param lab_im: np.ndarray, labelled image with only positive values and 0
-    :param edge_length: int, height and width of the square used on the centre
-    :param bg_label: int, the label number that will be considered background.
+    :param lab_im: labelled image with only positive values and 0
+    :param edge_length: height and width of the square used on the centre
+    :param bg_label: the label number that will be considered background.
         This can not be chosen as the primary label.
-    :return: int, primary label
+    :return: primary label
     """
     centre = (lab_im.shape[0] // 2, lab_im.shape[1] // 2)
     crop = util.crop_region(lab_im, centre, (edge_length, edge_length))
     return np.argmax(np.bincount(crop[crop != bg_label].ravel()))
 
 
-def central_ob(mask, edge_length=200):
+def central_ob(mask: np.ndarray, edge_length: int = 200) -> np.ndarray:
     """ Selects the largest object in the centre of the image
 
-    :param mask: np.ndarray, 2d array representing a background mask
-    :param edge_length: int, height and width of the square considered the
+    :param mask: 2d array representing a background mask
+    :param edge_length: height and width of the square considered the
         centre
-    :return: np.ndarray, 2d array representing the input mask with only the
+    :return: 2d array representing the input mask with only the
         largest central object
     """
     label_image = sk.measure.label(mask)
@@ -212,15 +222,18 @@ def central_ob(mask, edge_length=200):
     return centre_mask
 
 
-def canny_central_ob(image, mask, sigma, central_area=200):
+def canny_central_ob(
+        image: np.ndarray, mask: np.ndarray, sigma: float,
+        central_area: int = 200
+) -> np.ndarray:
     """ Uses canny filter and color channel thresholding to take central object
 
-    :param image: np.ndarray, 3d array representing rgb image
-    :param mask: np.ndarray, 2d boolean array representing background mask
-    :param sigma: float, sigma used for gaussian blur step of canny edge
+    :param image: 3d array representing rgb image
+    :param mask: 2d boolean array representing background mask
+    :param sigma: sigma used for gaussian blur step of canny edge
         detection
-    :param central_area: int, central area size
-    :return np.ndarray, 2d binary mask of central object
+    :param central_area: central area size
+    :return: 2d binary mask of central object
     """
     bg_labs = sk.measure.label(mask)
     mask = bg_labs == centre_primary_label(bg_labs)
