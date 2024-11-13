@@ -95,24 +95,6 @@ def paint_col(
     return image
 
 
-def merge_masks(bg_mask: np.ndarray, pheno_mask: np.ndarray) -> np.ndarray:
-    """ Merges 2 binary masks into one mask, where phenotype has high values
-
-    :param bg_mask: 2D mask with background as 0 and foreground as
-        1
-    :param pheno_mask: 2D mask phenotype marked as 1 and everything
-        else as 0
-    :return: 2D mask with background marked as 0, foreground as 1 and
-        phenotype area as 2
-    """
-    substep = bg_mask.astype(int) + pheno_mask.astype(int)
-    comb_mask = np.zeros_like(bg_mask)
-    comb_mask[substep == 1] = 2
-    comb_mask[substep == 2] = 1
-    comb_mask[bg_mask == 0] = 0
-    return comb_mask
-
-
 def threshold_between(
         image: np.ndarray, x_low: float | int = None,
         x_high: float | int = None, y_low: float | int = None,
