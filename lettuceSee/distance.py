@@ -11,34 +11,9 @@ import skimage as sk
 import scipy.ndimage as ndi
 
 
-def label_right_to_left(mask: np.ndarray) -> np.ndarray:
-    """ Labels images from left to right
-
-    :param mask: Binary mask of objects that need to be labelled
-    :return: Mask of labelled objects
-    """
-    rotated = np.rot90(mask, 1)
-    labeled = sk.measure.label(rotated)
-    reset = np.rot90(labeled, 3)
-    return reset
-
-
-def parse_coord_file(filename: str) -> list[tuple[int, int]]:
-    """ Parser for ImageJ xy.txt output files
-
-    :param filename: The input file
-    :return: List where each element is a tuple of ints in form (x, y)
-    """""
-    out_lines = []
-    with open(filename) as infile:
-        for line in infile:
-            line = line.strip().split(sep="\t")
-            line = [int(float(elem)) for elem in line]
-            out_lines.append(tuple(line))
-    return out_lines
-
-
-def coord_dist_map(mask: np.ndarray, seed_coords: list[tuple[int, int]]) -> np.ndarray:
+def coord_dist_map(
+        mask: np.ndarray, seed_coords: list[tuple[int, int]]
+) -> np.ndarray:
     """ Creates a distance map from seeds given as coordinates, bound by a mask
 
     :param mask: The binary mask that gives the boundaries of the distance map

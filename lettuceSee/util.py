@@ -6,6 +6,7 @@ Date: 11/10/2023
 Utility functions for image analysis
 """
 import numpy as np
+import skimage as sk
 
 
 def crop_region(
@@ -158,3 +159,31 @@ def threshold_between(
     else:
         comp_mask = x_mask | y_mask | z_mask
     return comp_mask
+
+
+def label_horizontally(mask: np.ndarray, left_right: bool = True) -> np.ndarray:
+    """ Labels images from left to right
+
+    :param mask: Binary mask of objects that need to be labelled
+    :param left_right: If true labels left to right, if false right to left
+    :return: Mask of labelled objects
+    """
+    rotated = np.rot90(mask, 3) if left_right else np.rot90(mask, 1)
+    labeled = sk.measure.label(rotated)
+    reset = np.rot90(labeled, 1) if left_right else np.rot90(labeled, 3)
+    return reset
+
+
+def parse_coord_file(filename: str) -> list[tuple[int, int]]:
+    """ Parser for ImageJ xy.txt output files
+
+    :param filename: The input file
+    :return: List where each element is a tuple of ints in form (x, y)
+    """""
+    out_lines = []
+    with open(filename) as infile:
+        for line in infile:
+            line = line.strip().split(sep="\t")
+            line = [int(float(elem)) for elem in line]
+            out_lines.append(tuple(line))
+    return out_lines
