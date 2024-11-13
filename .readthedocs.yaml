@@ -9,5 +9,8 @@ python:
   install:
     - requirements: docs/requirements.txt
 
+python:
+    setup_py_install: true
+
 sphinx:
   configuration: docs/source/conf.py
