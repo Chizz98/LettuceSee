@@ -6,11 +6,9 @@ build:
     python: "3.12"
 
 python:
+  setup_py_install: true
   install:
     - requirements: docs/requirements.txt
-
-python:
-    setup_py_install: true
 
 sphinx:
   configuration: docs/source/conf.py
