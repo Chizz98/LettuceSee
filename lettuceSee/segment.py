@@ -155,7 +155,7 @@ def barb_hue(
         image = util.multichannel_mask(image, bg_mask)
     # Get hue channel and scale from 0 to 1
     hue = sk.color.rgb2hsv(image)[:, :, 0]
-    hue_con = util.increase_contrast(hue)
+    hue_con = util.scale_zero_to_one(hue)
     hue_fg = hue_con[bg_mask == 1]
     # Healthy tissue masking
     thresh = barb_thresh(hue_fg, div)
