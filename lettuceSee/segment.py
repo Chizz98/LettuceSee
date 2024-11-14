@@ -123,7 +123,7 @@ def barb_thresh(im_channel: np.ndarray, div: int = 3) -> float:
     :return: the threshold of the image channel that separates it into
         healthy and unhealthy tissue
     
-    Based on method described in 10.1007/s40858-016-0090-8
+    Based on method described in `(Barbedo, 2016) <10.1007/s40858-016-0090-8>`_
     """
     values, bins = np.histogram(im_channel, bins=100)
     peak_i = np.argmax(values)
@@ -152,7 +152,7 @@ def barb_hue(
     :return: mask with background as 0, healthy tissue as 1 and
         brown tissue as 2
 
-    Based on method described in 10.1007/s40858-016-0090-8
+    Based on method described in `(Barbedo, 2016)<10.1007/s40858-016-0090-8>`_
     """
     if bg_mask is not None:
         # Apply mask to rgb_im
