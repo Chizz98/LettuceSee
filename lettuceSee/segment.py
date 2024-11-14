@@ -12,7 +12,7 @@ from . import util
 
 
 def elevation_map(rgb_im: np.ndarray) -> np.ndarray:
-    """ Creates an elevation map of an RGB image based on sobel filtering
+    """ Creates an elevation map of an RGB image by summing the sobel outputs of each channel
 
     :param rgb_im: 3 dimensional array representing an RGB image
     :return: 2 dimensional array representing an edge map
@@ -109,7 +109,6 @@ def shw_segmentation(
         comp_sob >= min_bins[0] + (fg_mod * (max_bins[1] - min_bins[0]))] = 2
     markers = markers.astype(int)
     mask = sk.segmentation.watershed(elevation, markers)
-    mask = sk.morphology.erosion(mask, footprint=sk.morphology.disk(2))
     return mask - 1
 
 
@@ -176,7 +175,7 @@ def barb_hue(
 
 
 def canny_labs(image: np.ndarray, mask: np.ndarray, sigma: float) -> np.ndarray:
-    """ Separates objects trough canny lines and then labels the output
+    """ Separates objects trough canny edge detection and then labels the output
 
     :param image: 2d array representing an image
     :param mask: 2d binary mask
@@ -198,7 +197,7 @@ def canny_labs(image: np.ndarray, mask: np.ndarray, sigma: float) -> np.ndarray:
 def centre_primary_label(
         lab_im: np.ndarray, edge_length: int = 200, bg_label: int = 0
 ) -> np.ndarray:
-    """ Takes labelled image and returns the label of the central object
+    """ returns the label of the largest object within a central square with ribs of edge_length
 
     :param lab_im: labelled image with only positive values and 0
     :param edge_length: height and width of the square used on the centre
@@ -212,7 +211,7 @@ def centre_primary_label(
 
 
 def central_ob(mask: np.ndarray, edge_length: int = 200) -> np.ndarray:
-    """ Selects the largest object in the centre of the image
+    """ Selects the largest object within a central square with ribs of edge_length
 
     :param mask: 2d array representing a background mask
     :param edge_length: height and width of the square considered the
@@ -227,16 +226,18 @@ def central_ob(mask: np.ndarray, edge_length: int = 200) -> np.ndarray:
 
 
 def canny_central_ob(
-        image: np.ndarray, mask: np.ndarray, sigma: float,
-        central_area: int = 200
+        image: np.ndarray, mask: np.ndarray, sigma: float, central_area: int = 200,
+        allowed_deviation: tuple[tuple[int | float, int | float], ...] = ((0.1, 0.1), (0.25, 0.25), (0.25, 0.25))
 ) -> np.ndarray:
     """ Uses canny filter and color channel thresholding to take central object
 
-    :param image: 3d array representing rgb image
+    :param image: 3d array representing color image
     :param mask: 2d boolean array representing background mask
     :param sigma: sigma used for gaussian blur step of canny edge
         detection
     :param central_area: central area size
+    :param allowed_deviation: tuple with nested tuple for each channel of an image. Each nested tuple contains the lower
+        and upper deviation allowed for that channel
     :return: 2d binary mask of central object
     """
     bg_labs = sk.measure.label(mask)
@@ -246,15 +247,13 @@ def canny_central_ob(
     average_cols = sk.color.label2rgb(canny_labelled, image, kind="avg")
     average_cols = sk.color.rgb2hsv(average_cols)
     prim_area = util.multichannel_mask(average_cols, canny_labelled == prim_lab)
-    h_main = np.unique(prim_area[:, :, 0])[1]
-    s_main = np.unique(prim_area[:, :, 1])[1]
-    v_main = np.unique(prim_area[:, :, 2])[1]
+    ch_one = np.unique(prim_area[:, :, 0])[1]
+    ch_two = np.unique(prim_area[:, :, 1])[1]
+    ch_three = np.unique(prim_area[:, :, 2])[1]
     mask = util.threshold_between(
         image=average_cols,
-        x_low=h_main - 0.1, x_high=h_main + 0.1,
-        y_low=s_main - 0.25, y_high=s_main + 0.25,
-        z_low=v_main - 0.25, z_high=v_main + 0.25
+        x_low=ch_one - allowed_deviation[0][0], x_high=ch_one + allowed_deviation[0][1],
+        y_low=ch_two - allowed_deviation[1][0], y_high=ch_two + allowed_deviation[1][1],
+        z_low=ch_three - allowed_deviation[2][0], z_high=ch_three + allowed_deviation[2][1]
     )
-    mask = sk.morphology.closing(mask, footprint=sk.morphology.disk(3))
-    mask = sk.morphology.remove_small_holes(mask, area_threshold=150)
     return mask
