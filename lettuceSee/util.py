@@ -35,7 +35,7 @@ def crop_region(
 
 
 def read_fimg(filename: str) -> np.ndarray:
-    """ Turns an FIMG value into a normalized file with data between 0 and 1
+    """ Turns an FIMG value into a numpy nd.array
 
     :param filename: name of the file that is to be opened
     :return: 2D array representing the fimg image
@@ -43,11 +43,10 @@ def read_fimg(filename: str) -> np.ndarray:
     image = np.fromfile(filename, np.dtype("float32"))
     image = image[2:]
     image = np.reshape(image, newshape=(1024, 1360))
-    image[image < 0] = 0
     return image
 
 
-def increase_contrast(im_channel: np.ndarray) -> np.ndarray:
+def scale_zero_to_one(im_channel: np.ndarray) -> np.ndarray:
     """ Takes a 2d array and makes its values range from 0 to 1
 
     :param im_channel: numpy array with 2 dimensions
