@@ -1,4 +1,4 @@
-import lettuceSee as ls
+import lettuceSee as lS
 import unittest
 import numpy as np
 import scipy.ndimage as ndi
@@ -11,7 +11,7 @@ class TestImDistMap(unittest.TestCase):
         seeds = np.zeros_like(mask)
         seeds[3, 3] = 1
         seeds = seeds.astype(bool)
-        distance = ls.distance.im_dist_map(mask, seeds.astype(bool))
+        distance = lS.distance.im_dist_map(mask, seeds.astype(bool))
         # Set up test case
         test_dist = ndi.distance_transform_edt(np.invert(seeds))
         test_dist[mask == 0] = 0
@@ -24,7 +24,7 @@ class TestImDistMap(unittest.TestCase):
         seeds = np.zeros_like(mask)
         seeds[3, 3] = 1
         seeds = seeds.astype(bool)
-        distance = ls.distance.im_dist_map(mask, seeds.astype(bool))
+        distance = lS.distance.im_dist_map(mask, seeds.astype(bool))
 
         # Set up test case
         test_dist = ndi.distance_transform_edt(np.invert(seeds))
@@ -39,7 +39,7 @@ class TestImDistMap(unittest.TestCase):
         seeds[1, 1] = 1
         seeds[1, 5] = 1
         seeds = seeds.astype(bool)
-        distance = ls.distance.im_dist_map(mask, seeds.astype(bool))
+        distance = lS.distance.im_dist_map(mask, seeds.astype(bool))
 
         # Set up test case
         test_dist = ndi.distance_transform_edt(np.invert(seeds))
