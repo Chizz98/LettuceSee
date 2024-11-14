@@ -8,7 +8,6 @@ to the nearest seed.
 """
 
 import numpy as np
-import skimage as sk
 import scipy.ndimage as ndi
 
 
