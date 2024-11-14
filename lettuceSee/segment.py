@@ -151,7 +151,7 @@ def barb_hue(
     :return: mask with background as 0, healthy tissue as 1 and
         brown tissue as 2
 
-    Based on method described in `(Barbedo, 2016)<https://doi.org/10.1007/s40858-016-0090-8>`_
+    Based on method described in `(Barbedo, 2016) <https://doi.org/10.1007/s40858-016-0090-8>`_
     """
     if bg_mask is not None:
         # Apply mask to rgb_im
