@@ -10,7 +10,7 @@ import skimage as sk
 
 
 def crop_region(
-        image: np.ndarray, centre: int, shape: tuple[int, int]
+        image: np.ndarray, centre: tuple[int, int], shape: tuple[int, int]
 ) -> np.ndarray:
     """ Crops an image area of specified width and height around a central point
 
@@ -22,13 +22,13 @@ def crop_region(
     """
     if image.ndim == 2:
         crop = image[
-               centre[1] - shape[0] // 2: centre[1] + shape[0] // 2,
-               centre[0] - shape[1] // 2: centre[0] + shape[1] // 2
+               centre[1] - shape[0] // 2: centre[1] + shape[0] // 2 + shape[0] % 2,
+               centre[0] - shape[1] // 2: centre[0] + shape[1] // 2 + shape[1] % 2
                ]
     else:
         crop = image[
-               centre[1] - shape[0] // 2: centre[1] + shape[0] // 2,
-               centre[0] - shape[1] // 2: centre[0] + shape[1] // 2,
+               centre[1] - shape[0] // 2: centre[1] + shape[0] // 2 + shape[0] % 2,
+               centre[0] - shape[1] // 2: centre[0] + shape[1] // 2 + shape[1] % 2,
                :
                ]
     return crop
