@@ -16,6 +16,10 @@ class SkeletonNetwork:
     :param skel_im: A skeletonized image (for example output from
     skimage.morphology.skeletonize)
     """
+
+    skel_im: np.ndarray[int, ...]
+    "Skeleton image with nodes as 2, edges as 1 and background as 0"
+
     def __init__(self, skel_im: np.ndarray[int, ...]):
         """ Constructor method """
         self.skel_im = np.pad(skel_im, (1, 1))
@@ -155,4 +159,3 @@ class SkeletonNetwork:
             y = int(sum(y) / len(y))
             out_dict[node] = x, y
         return out_dict
-
