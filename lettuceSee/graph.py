@@ -5,7 +5,7 @@ Author: Chris Dijkstra
 Functions for creating and analyzing graphs from skeletonized binary images.
 """
 
-from skimage import morphology, io, measure
+import skimage as sk
 import numpy as np
 import networkx as nx
 
@@ -100,7 +100,7 @@ class SkeletonNetwork:
 
         :returns: None, appends edges as tuples to self.edges
         """
-        labelled_edges = measure.label(self.skel_im == 1)
+        labelled_edges = sk.measure.label(self.skel_im == 1)
         labelled_edges_flat = labelled_edges.ravel()
         # Create dictionary for edges
         edge_labels = set(labelled_edges_flat)
@@ -151,8 +151,8 @@ class SkeletonNetwork:
                 col, row = self._flat_to_coord(coord)
                 x.append(col)
                 y.append(row)
-            x = sum(x) / len(x)
-            y = sum(y) / len(y)
+            x = int(sum(x) / len(x))
+            y = int(sum(y) / len(y))
             out_dict[node] = x, y
         return out_dict
 
