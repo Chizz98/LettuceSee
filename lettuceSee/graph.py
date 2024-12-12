@@ -84,7 +84,7 @@ class SkeletonNetwork:
         self.nodes
         """
         flat_im = self.skel_im.ravel()
-        labelled_nodes = measure.label(self.skel_im == 2).ravel()
+        labelled_nodes = sk.measure.label(self.skel_im == 2).ravel()
         node_labs = set(labelled_nodes)
         node_labs.remove(0)
         for label in node_labs:
