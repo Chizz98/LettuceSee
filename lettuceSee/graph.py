@@ -17,8 +17,14 @@ class SkeletonNetwork:
     skimage.morphology.skeletonize)
     """
 
+    network: nx.Graph
+    "The network representation of the graph"
     skel_im: np.ndarray[int, ...]
     "Skeleton image with nodes as 2, edges as 1 and background as 0"
+    label_edge_dict: dict[int, tuple[int, int]]
+    "LUT for edge labels in labelled_edges and the corresponding edge"
+    labelled_edges: np.ndarray[int, ...]
+    "Skeleton image with all edges labelled sequentially"
 
     def __init__(self, skel_im: np.ndarray[int, ...]):
         """ Constructor method """
