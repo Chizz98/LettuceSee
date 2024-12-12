@@ -13,10 +13,11 @@ import networkx as nx
 class SkeletonNetwork:
     """ Class used to create network representations of skeletonized images
 
-    :param skel_im: A skeletonized image (for example output from skimage.
-    morphology.skeletonize
+    :param skel_im: A skeletonized image (for example output from
+    skimage.morphology.skeletonize)
     """
-    def __init__(self, skel_im):
+    def __init__(self, skel_im: np.ndarray[int, ...]):
+        """ Constructor method """
         self.skel_im = np.pad(skel_im, (1, 1))
         self.labelled_edges = np.zeros_like(self.skel_im)
         self.surr_mods = self._neighbours()
@@ -28,27 +29,23 @@ class SkeletonNetwork:
         self._parse_structure()
         self.network = self.construct_network()
 
-    def _flat_to_coord(self, flat_index):
+    def _flat_to_coord(self, flat_index) -> tuple[int, int]:
         """ Takes the index of 1D representation and returns 2D coordinates
 
-        parameters:
-        flat_index -- int, the position in the 1D representation of a 2D array
-        return:
-        tuple, the row and column in the 2D array
+        :param flat_index: the position in the 1D representation of a 2D array
+        :return: the x and y coordinates of the  input coordinate in the 2D
+        array
         """
         cols = self.skel_im.shape[1]
         x = flat_index % cols
         y = flat_index // cols
         return x, y
 
-    def _neighbours(self):
+    def _neighbours(self) -> np.ndarray[int]:
         """ Returns index modifiers for _neighbours in 1D version of 2D array
 
-        parameters:
-        None
-        return:
-        np.array, 1D array with the index modifiers to find the _neighbours in
-            flattened image
+        :return: np.array, 1D array with the index modifiers to find the
+            neighbours in the flattened image
         """
         row_len = self.skel_im.shape[1]
         mod = np.array([-1, 0, 1])
@@ -57,14 +54,11 @@ class SkeletonNetwork:
         bottom = (np.array([row_len] * 3) + mod)
         return np.concatenate([top, mid, bottom])
 
-    def _mark(self):
-        """ Reads a skeletonized image and marks the pixels based on _neighbours
+    def _mark(self) -> np.ndarray[int, ...]:
+        """ Reads a skeletonized image and marks all pixels based on their neighbours
 
-        parameters:
-        None
-        return:
-        np.array, a 2d array containing 0s for background, 1s for nodes in a
-            line and 2s for nodes with 1 or more than 2 connections.
+        :return: A 2d array containing 0s for background, 1s for nodes in a
+        line and 2s for nodes with 1 or more than 2 connections.
         """
         flat_im = self.skel_im.ravel()
         for i in range(len(flat_im)):
@@ -79,13 +73,11 @@ class SkeletonNetwork:
                     flat_im[i] = 2
         return flat_im
 
-    def _construct_nodes(self):
+    def _construct_nodes(self) -> None:
         """ Reads the marked image output by self._mark and constructs the nodes
 
-        parameters:
-        None
-        returns:
-        None, appends all nodes with less or more than 2 edges to self.nodes
+        :return: None, appends all nodes with less or more than 2 edges to
+        self.nodes
         """
         flat_im = self.skel_im.ravel()
         labelled_nodes = measure.label(self.skel_im == 2).ravel()
@@ -103,13 +95,10 @@ class SkeletonNetwork:
             else:
                 flat_im[list(node)] = 1
 
-    def _construct_edges(self):
-        """ Creates an edge graph of a skeletonized image
+    def _construct_edges(self) -> None:
+        """ Creates an edge graph of a marked skeletonized image
 
-        parameters:
-        None
-        returns:
-        None, appends edges as tuples to self.edges
+        :returns: None, appends edges as tuples to self.edges
         """
         labelled_edges = measure.label(self.skel_im == 1)
         labelled_edges_flat = labelled_edges.ravel()
@@ -127,40 +116,31 @@ class SkeletonNetwork:
         self.labelled_edges = labelled_edges
         self.label_edge_dict = edges
 
-    def _parse_structure(self):
+    def _parse_structure(self) -> None:
         """ Reads the marked skeleton output of self._mark and annotates it
 
-        parameters:
-        None
-        return:
-        None, fills self.edges and self.nodes with edges and nodes.
+        :return: None, fills self.edges and self.nodes with edges and nodes.
         """
         # Get nodes
         self._construct_nodes()
         self._construct_edges()
 
-    def construct_network(self):
+    def construct_network(self) -> nx.Graph:
         """ Takes defined nodes and edges and adds them to self.network
 
-        parameters:
-        None
-        return:
-        networkx.Graph object, contains the edges and nodes as defined in
-            self.edges and self.nodes
+        :return: networkx.Graph object, contains the edges and nodes as defined
+        in self.edges and self.nodes
         """
         network = nx.Graph()
         network.add_nodes_from(self.nodes.keys())
         network.add_edges_from(self.edges)
         return network
 
-    def node_dict(self):
+    def node_dict(self) -> dict[int, tuple[int, int]]:
         """ Outputs a dictionary of nodes with coordinates
 
-        parameters:
-        None
-        returns:
-        dict, keys are sequential integers for the nodes, values are tuples in
-            the form of (x, y) with x and y being ints.
+        :return: dict, keys are sequential integers for the nodes, values are
+        tuples in the form of (x, y) with x and y being ints.
         """
         out_dict = {}
         for node in self.nodes:
