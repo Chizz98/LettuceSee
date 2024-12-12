@@ -18,7 +18,8 @@ setup(
     install_requires=[
         "scikit-image",
         "scipy",
-        "numpy"
+        "numpy",
+        "networkx"
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
