@@ -2,9 +2,7 @@
 """
 Author: Chris Dijkstra
 
-Contains the class SkeletonNetwork, which can be utilized to read in skele-
-tonized images and output an edge graph, where each intersection of lines is
-considered a node and the connecting lines the edges.
+Functions for creating and analyzing graphs from skeletonized binary images.
 """
 
 from skimage import morphology, io, measure
