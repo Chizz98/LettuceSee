@@ -11,6 +11,11 @@ import networkx as nx
 
 
 class SkeletonNetwork:
+    """ Class used to create network representations of skeletonized images
+
+    :param skel_im: A skeletonized image (for example output from skimage.
+    morphology.skeletonize
+    """
     def __init__(self, skel_im):
         self.skel_im = np.pad(skel_im, (1, 1))
         self.labelled_edges = np.zeros_like(self.skel_im)
@@ -171,31 +176,3 @@ class SkeletonNetwork:
             out_dict[node] = x, y
         return out_dict
 
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-
-    im_dir = "test_images/dummy_veins.png"
-    image = io.imread(im_dir)[:, :, 3].astype(int)
-    image[image > 0] = 1
-
-    skeleton = morphology.skeletonize(image).astype(int)
-    skeleton = morphology.remove_small_objects(skeleton)
-    skel_net = SkeletonNetwork(skeleton)
-    network = skel_net.construct_network()
-    betweenness = nx.betweenness_centrality(network)
-
-    _, axes = plt.subplots(1, 2, sharex=True, sharey=True)
-    axes[0].imshow(io.imread(im_dir))
-    axes[1].imshow(skel_net.skel_im > 0, cmap="gray_r")
-    x = []
-    y = []
-    c = []
-    for key, node in skel_net.node_dict().items():
-        x_p, y_p = node
-        x.append(x_p)
-        y.append(y_p)
-        c.append(betweenness[key] > 0)
-    plt.scatter(x, y, c=c)
-    plt.tight_layout()
-    plt.show()
