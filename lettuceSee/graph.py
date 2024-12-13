@@ -17,7 +17,7 @@ class SkeletonNetwork:
     :param skel_im: A skeletonized image (for example output from skimage.morphology.skeletonize)
     """
     network: nx.Graph
-    "**Attribute**: the network representation of the graph"
+    "**Attribute**: the network representation of the skeleton image"
     skel_im: np.ndarray[int, ...]
     "**Attribute**: Skeleton image with nodes as 2, edges as 1 and background as 0"
     label_edge_dict: dict[int, tuple[int, int]]
