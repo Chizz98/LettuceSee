@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 Author: Chris Dijkstra
+Date: 13-12-2024
 
 Functions for creating and analyzing graphs from skeletonized binary images.
 """
@@ -13,18 +14,16 @@ import networkx as nx
 class SkeletonNetwork:
     """ Class used to create network representations of skeletonized images
 
-    :param skel_im: A skeletonized image (for example output from
-    skimage.morphology.skeletonize)
+    :param skel_im: A skeletonized image (for example output from skimage.morphology.skeletonize)
     """
-
     network: nx.Graph
-    "The network representation of the graph"
+    "**Attribute**: the network representation of the graph"
     skel_im: np.ndarray[int, ...]
-    "Skeleton image with nodes as 2, edges as 1 and background as 0"
+    "**Attribute**: Skeleton image with nodes as 2, edges as 1 and background as 0"
     label_edge_dict: dict[int, tuple[int, int]]
-    "LUT for edge labels in labelled_edges and the corresponding edge"
+    "**Attribute**: LUT for edge labels in labelled_edges and the corresponding edge"
     labelled_edges: np.ndarray[int, ...]
-    "Skeleton image with all edges labelled sequentially"
+    "**Attribute**: Skeleton image with all edges labelled sequentially"
 
     def __init__(self, skel_im: np.ndarray[int, ...]):
         """ Constructor method """
@@ -108,7 +107,7 @@ class SkeletonNetwork:
     def _construct_edges(self) -> None:
         """ Creates an edge graph of a marked skeletonized image
 
-        :returns: None, appends edges as tuples to self.edges
+        :return: None, appends edges as tuples to self.edges
         """
         labelled_edges = sk.measure.label(self.skel_im == 1)
         labelled_edges_flat = labelled_edges.ravel()
@@ -136,7 +135,7 @@ class SkeletonNetwork:
         self._construct_edges()
 
     def construct_network(self) -> nx.Graph:
-        """ Takes defined nodes and edges and adds them to self.network
+        """ **Method**: Takes defined nodes and edges and adds them to self.network
 
         :return: networkx.Graph object, contains the edges and nodes as defined
         in self.edges and self.nodes
@@ -147,7 +146,7 @@ class SkeletonNetwork:
         return network
 
     def node_dict(self) -> dict[int, tuple[int, int]]:
-        """ Outputs a dictionary of nodes with coordinates
+        """ **Method**: Outputs a dictionary of nodes with coordinates
 
         :return: dict, keys are sequential integers for the nodes, values are
         tuples in the form of (x, y) with x and y being ints.

@@ -36,3 +36,6 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ['_static']
 
 autodoc_typehints = "signature"
+
+# Make autodoc order follow the source files
+autodoc_member_order = 'bysource'
