@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Author: Chris Dijkstra
-Date: 13-12-2024
+Date: 13/12/2024
 
 Functions for creating and analyzing graphs from skeletonized binary images.
 """
@@ -43,7 +43,7 @@ class SkeletonNetwork:
 
         :param flat_index: the position in the 1D representation of a 2D array
         :return: the x and y coordinates of the  input coordinate in the 2D
-        array
+            array
         """
         cols = self.skel_im.shape[1]
         x = flat_index % cols
@@ -67,7 +67,7 @@ class SkeletonNetwork:
         """ Reads a skeletonized image and marks all pixels based on their neighbours
 
         :return: A 2d array containing 0s for background, 1s for nodes in a
-        line and 2s for nodes with 1 or more than 2 connections.
+            line and 2s for nodes with 1 or more than 2 connections.
         """
         flat_im = self.skel_im.ravel()
         for i in range(len(flat_im)):
@@ -86,7 +86,7 @@ class SkeletonNetwork:
         """ Reads the marked image output by self._mark and constructs the nodes
 
         :return: None, appends all nodes with less or more than 2 edges to
-        self.nodes
+            self.nodes
         """
         flat_im = self.skel_im.ravel()
         labelled_nodes = sk.measure.label(self.skel_im == 2).ravel()
@@ -138,7 +138,7 @@ class SkeletonNetwork:
         """ **Method**: Takes defined nodes and edges and adds them to self.network
 
         :return: networkx.Graph object, contains the edges and nodes as defined
-        in self.edges and self.nodes
+            in self.edges and self.nodes
         """
         network = nx.Graph()
         network.add_nodes_from(self.nodes.keys())
@@ -149,7 +149,7 @@ class SkeletonNetwork:
         """ **Method**: Outputs a dictionary of nodes with coordinates
 
         :return: dict, keys are sequential integers for the nodes, values are
-        tuples in the form of (x, y) with x and y being ints.
+            tuples in the form of (x, y) with x and y being ints.
         """
         out_dict = {}
         for node in self.nodes:
