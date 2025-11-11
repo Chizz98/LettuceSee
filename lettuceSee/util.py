@@ -35,15 +35,22 @@ def crop_region(
 
 
 def read_fimg(filename: str) -> np.ndarray:
-    """ Turns an FIMG value into a numpy nd.array
+    """ Reads a fimg image from a file and outputs the corresponding np.ndarray
 
     :param filename: name of the file that is to be opened
     :return: 2D array representing the fimg image
     """
-    image = np.fromfile(filename, np.dtype("float32"))
-    image = image[2:]
-    image = np.reshape(image, newshape=(1024, 1360))
-    return image
+    with open(filename, "rb") as infile:
+        data = infile.read()
+        # Read dimensions from first 8 bytes
+        dimensions = np.frombuffer(data[:8], dtype=np.int32)
+        # Read image as 32bit floats
+        flat_im = np.frombuffer(data[8:], dtype=np.float32)
+        image = np.reshape(
+            flat_im,
+            newshape=(dimensions[1], dimensions[0])
+        )
+    return image.copy()
 
 
 def scale_zero_to_one(im_channel: np.ndarray) -> np.ndarray:
